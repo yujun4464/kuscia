@@ -120,17 +120,17 @@ workflows:
               executor: [ "linux_x64_executor", "linux_aarch64_executor" ]
           filters:
             branches:
-              only: /^release.*/
+              only: /*.*/
             tags:
-              only: /^v.*/
+              only: /*.*/
       - image_publish:
           requires:
             - linux_build_kuscia
           filters:
             branches:
-              only: /^release.*/
+              only: /*.*/
             tags:
-              only: /^v.*/
+              only: /*.*/
   build-kuscia-deps-workflow:
     when:
       equal: [ "publish_kuscia_deps", << pipeline.parameters.GHA_Meta >> ]
