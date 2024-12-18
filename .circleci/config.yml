@@ -57,6 +57,10 @@ jobs:
           command: |
             set -ex
 
+            DIR="/tmp/build/linux"
+            mkdir -p ./build/linux
+            cp -rf $DIR ./build/linux/*
+
             IMAGE="secretflow/kuscia"
             docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
 
