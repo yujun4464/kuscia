@@ -58,6 +58,9 @@ jobs:
             
             IMAGE="secretflow/kuscia"
             docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
+            export KUSCIA_IMAGE=$IMAGE:latest
+            docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
+            ./kuscia.sh center
 
 
 # Orchestrate jobs using workflows
