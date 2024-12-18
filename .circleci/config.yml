@@ -23,7 +23,6 @@ jobs:
             set -ex
 
             git config --global --add safe.directory ./
-            make build
 
             IMAGE="secretflow/kuscia"
             docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
