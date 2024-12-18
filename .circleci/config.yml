@@ -42,7 +42,7 @@ jobs:
       - build_kuscia
   image_publish:
     docker:
-      - image: cimg/deploy:2023.06.1
+      - image: cimg/deploy:2024.11.1-node
     shell: /bin/bash --login -eo pipefail
     steps:
       - checkout
