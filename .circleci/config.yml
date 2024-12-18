@@ -52,15 +52,15 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - attach_workspace:
+          at: /tmp/build
       - run:
           name: Build image and publish
           command: |
             set -ex
 
-            DIR="/tmp/build/linux"
-            mkdir -p ./build/linux
-            cp -rf $DIR ./build/linux/*
-
+            mv /tmp/build/linux ./build/
+            
             IMAGE="secretflow/kuscia"
             docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
 
