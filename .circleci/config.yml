@@ -91,11 +91,9 @@ jobs:
             set -ex
             mv /tmp/build/linux ./build/
             IMAGE="secretflow/kuscia"
-            ALIYUN_IMAGE="secretflow-registry.cn-hangzhou.cr.aliyuncs.com/secretflow/kuscia"
 
-            docker buildx create --name kuscia --platform linux/arm64,linux/amd64 --use
-            docker buildx build -t ${IMAGE}:${CIRCLETAG} --platform linux/arm64,linux/amd64 -f ./build/dockerfile/kuscia-anolis.Dockerfile
-            export KUSCIA_IMAGE=${IMAGE}:${CIRCLETAG}
+            docker build -t secretflow/kuscia:test --platform linux/arm64,linux/amd64 -f ./build/dockerfile/kuscia-anolis.Dockerfile
+            export KUSCIA_IMAGE=secretflow/kuscia:test
             docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
             ./kuscia.sh center
 
