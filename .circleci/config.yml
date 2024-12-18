@@ -52,8 +52,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - attach_workspace:
-          at: /tmp/build
       - run:
           name: Build image and publish
           command: |
