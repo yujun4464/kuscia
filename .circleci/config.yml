@@ -7,34 +7,7 @@ setup: true
 orbs:
   continuation: circleci/continuation@0.3.1
 
-commands:
-  build_kuscia:
-    steps:
-      - checkout
-      - run:
-          name: "make build"
-          command: |
-            git config --global --add safe.directory ./
-            make build
-
-            DIR="/tmp/build/linux"
-            mkdir -p $DIR
-            cp -rf ./build/linux/* $DIR
-      - persist_to_workspace:
-          root: /tmp/build
-          paths:
-            - linux
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  linux_build_kuscia:
-    parameters:
-      executor:
-        type: string
-    executor: <<parameters.executor>>
-    steps:
-      - checkout
-      - build_kuscia
   image_publish:
     docker:
       - image: cimg/deploy:2023.06.1
@@ -48,26 +21,22 @@ jobs:
           name: Build image and publish
           command: |
             set -ex
-            mv /tmp/build/linux ./build/
-            IMAGE="secretflow/kuscia"
 
-            docker build -t secretflow/kuscia:test --platform linux/arm64,linux/amd64 -f ./build/dockerfile/kuscia-anolis.Dockerfile
-            export KUSCIA_IMAGE=secretflow/kuscia:test
-            docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
-            ./kuscia.sh center
+            git config --global --add safe.directory ./
+            make build
+
+            IMAGE="secretflow/kuscia"
+            docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
+
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   kuscia-workflow:
     jobs:
-      - linux_build_kuscia:
+      - image_publish:
           filters:
             branches:
               only: /.*/
-      - image_publish:
-          requires:
-            - linux_build_kuscia
-          filters:
-            branches:
+            tags:
               only: /.*/
