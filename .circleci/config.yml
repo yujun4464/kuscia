@@ -28,14 +28,13 @@ commands:
             git config --global --add safe.directory ./
             make build
 
-            DIR="/tmp/build/linux"
+            DIR="/tmp/build/$(uuidgen)/linux"
             mkdir -p $DIR
             cp -rf ./build/linux/* $DIR
       - persist_to_workspace:
           root: /tmp/build
           paths:
-            - linux
-
+            - .
 jobs:
   linux_build_kuscia:
     parameters:
@@ -59,7 +58,7 @@ jobs:
           command: |
             set -ex
 
-            mv /tmp/build/linux ./build/
+            mv /tmp/build/*/linux ./build/
             
             IMAGE="secretflow/kuscia"
             docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
