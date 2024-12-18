@@ -61,7 +61,8 @@ jobs:
             export KUSCIA_IMAGE=$IMAGE:latest
             export USER=test
             docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
-            ./kuscia.sh center
+            docker run -it --rm ${KUSCIA_IMAGE} kuscia init --mode autonomy --domain "alice" > autonomy_alice.yaml 2>&1 || cat autonomy_alice.yaml
+            ./kuscia.sh start -c autonomy_alice.yaml -p 11080 -k 11081
 
 
 # Orchestrate jobs using workflows
