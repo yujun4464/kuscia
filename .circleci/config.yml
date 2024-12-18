@@ -28,7 +28,7 @@ commands:
             git config --global --add safe.directory ./
             make build
 
-            DIR="/tmp/build/$(uuidgen)/linux"
+            DIR="/tmp/build/$(head /dev/urandom | base64 | tr -dc A-Za-z0-9 | head -c 8)/linux"
             mkdir -p $DIR
             cp -rf ./build/linux/* $DIR
       - persist_to_workspace:
