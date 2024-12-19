@@ -518,6 +518,9 @@ function start_kuscia_container() {
       fi
     fi
     start_container "${domain_ctr}" "${domain_id}" "${kuscia_conf_file}" "${mount_flag}" "${memory_limit}" "${domain_host_port}" "${kusciaapi_http_port}" "${kusciaapi_grpc_port}" "${domain_host_internal_port}" "${metrics_port}" "${domain_hostname}"
+    sleep 20s
+
+     docker logs ${domain_ctr}
     [[ "$domain_type" != "lite" ]] && probe_gateway_crd "${domain_ctr}" "${domain_id}" "${domain_hostname}" 60
     [[ "$domain_type" != "master" ]] && probe_datamesh "${domain_ctr}"
   fi
