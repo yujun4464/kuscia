@@ -42,7 +42,7 @@ jobs:
       - build_kuscia
   image_publish:
     machine:
-      - image: ubuntu-2404:2024.11.1
+      image: ubuntu-2404:2024.11.1
     shell: /bin/bash --login -eo pipefail
     steps:
       - checkout
