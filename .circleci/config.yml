@@ -32,14 +32,14 @@ commands:
           paths:
             - .
 jobs:
-  linux_build_kuscia:
-    parameters:
-      executor:
-        type: string
-    executor: <<parameters.executor>>
-    steps:
-      - checkout
-      - build_kuscia
+  # linux_build_kuscia:
+  #   parameters:
+  #     executor:
+  #       type: string
+  #   executor: <<parameters.executor>>
+  #   steps:
+  #     - checkout
+  #     - build_kuscia
   image_publish:
     docker:
       - image: cimg/deploy:2024.11.1-node
