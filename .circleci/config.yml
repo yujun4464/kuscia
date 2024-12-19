@@ -52,16 +52,19 @@ jobs:
           name: Build image and publish
           command: |
             set -ex
-
-            mv /tmp/build/*/linux ./build/
+            echo "11" > 11.yaml
+            cat 11.yaml
             
-            IMAGE="secretflow/kuscia"
-            docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
-            export KUSCIA_IMAGE=$IMAGE:latest
-            export USER=test
-            cd /tmp
-            docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
-            ./kuscia.sh p2p
+
+            # mv /tmp/build/*/linux ./build/
+            
+            # IMAGE="secretflow/kuscia"
+            # docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
+            # export KUSCIA_IMAGE=$IMAGE:latest
+            # export USER=test
+            # cd /tmp
+            # docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
+            # ./kuscia.sh p2p
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
@@ -78,8 +81,8 @@ workflows:
             tags:
               only: /.*/
       - image_publish:
-          requires:
-            - linux_build_kuscia
+          # requires:
+          #   - linux_build_kuscia
           filters:
             branches:
               only: /.*/
