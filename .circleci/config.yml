@@ -60,10 +60,9 @@ jobs:
             export KUSCIA_IMAGE=$IMAGE:latest
             export USER=test
             cd /tmp
-            docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh            
-            cat autonomy_alice.yaml
+            docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
             ./kuscia.sh p2p
-            
+
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
