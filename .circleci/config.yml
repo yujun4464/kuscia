@@ -32,17 +32,19 @@ commands:
           paths:
             - .
 jobs:
-  # linux_build_kuscia:
-  #   parameters:
-  #     executor:
-  #       type: string
-  #   executor: <<parameters.executor>>
-  #   steps:
-  #     - checkout
-  #     - build_kuscia
+  linux_build_kuscia:
+    parameters:
+      executor:
+        type: string
+    executor: <<parameters.executor>>
+    steps:
+      - checkout
+      - build_kuscia
   image_publish:
     docker:
       - image: cimg/deploy:2024.11.1-node
+        volumes:
+          - /tmp/kuscia_test:/tmp/kuscia_test
     shell: /bin/bash --login -eo pipefail
     steps:
       - checkout
@@ -53,12 +55,19 @@ jobs:
           name: Build image and publish
           command: |
             set -ex
-            curl cip.cc
-            # mv /tmp/build/*/linux ./build/
-            
-            # IMAGE="secretflow/kuscia"
-            # docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
 
+            mv /tmp/build/*/linux ./build/
+            
+            IMAGE="secretflow/kuscia"
+            docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
+            export KUSCIA_IMAGE=$IMAGE:latest
+            export USER=test
+            cd /tmp/kuscia_test
+            docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
+            docker run -it --rm ${KUSCIA_IMAGE} kuscia init --mode autonomy --domain "alice" > autonomy_alice.yaml && chmod 777 autonomy_alice.yaml
+            cat autonomy_alice.yaml
+            ls -la
+            ./kuscia.sh start -c autonomy_alice.yaml -p 11080 -k 11081
 
 
 # Orchestrate jobs using workflows
@@ -66,18 +75,18 @@ jobs:
 workflows:
   kuscia-workflow:
     jobs:
-      # - linux_build_kuscia:
-      #     matrix:
-      #       parameters:
-      #         executor: [ "linux_x64_executor" ]
-      #     filters:
-      #       branches:
-      #         only: /.*/
-      #       tags:
-      #         only: /.*/
+      - linux_build_kuscia:
+          matrix:
+            parameters:
+              executor: [ "linux_x64_executor" ]
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
       - image_publish:
-          # requires:
-          #   - linux_build_kuscia
+          requires:
+            - linux_build_kuscia
           filters:
             branches:
               only: /.*/
