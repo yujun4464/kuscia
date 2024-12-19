@@ -53,18 +53,21 @@ jobs:
           command: |
             set -ex
 
-            mv /tmp/build/*/linux ./build/
+            docker ps
+          
+
+            # mv /tmp/build/*/linux ./build/
             
-            IMAGE="secretflow/kuscia"
-            docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
-            export KUSCIA_IMAGE=$IMAGE:latest
-            export USER=test
-            cd /tmp
-            docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
-            docker run -it --rm ${KUSCIA_IMAGE} kuscia init --mode autonomy --domain "alice" > autonomy_alice.yaml && chmod 777 autonomy_alice.yaml
-            cat autonomy_alice.yaml
-            ls -la
-            ./kuscia.sh start -c autonomy_alice.yaml -p 11080 -k 11081
+            # IMAGE="secretflow/kuscia"
+            # docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
+            # export KUSCIA_IMAGE=$IMAGE:latest
+            # export USER=test
+            # cd /tmp
+            # docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
+            # docker run -it --rm ${KUSCIA_IMAGE} kuscia init --mode autonomy --domain "alice" > autonomy_alice.yaml && chmod 777 autonomy_alice.yaml
+            # cat autonomy_alice.yaml
+            # ls -la
+            # ./kuscia.sh start -c autonomy_alice.yaml -p 11080 -k 11081
 
 
 # Orchestrate jobs using workflows
@@ -82,8 +85,8 @@ workflows:
             tags:
               only: /.*/
       - image_publish:
-          requires:
-            - linux_build_kuscia
+          # requires:
+          #   - linux_build_kuscia
           filters:
             branches:
               only: /.*/
