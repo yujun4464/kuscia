@@ -54,18 +54,18 @@ jobs:
           command: |
             set -ex
 
-            # mv /tmp/build/*/linux ./build/
+            mv /tmp/build/*/linux ./build/
             
-            # IMAGE="secretflow/kuscia"
-            # docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
-            # export KUSCIA_IMAGE=$IMAGE:latest
-            # export USER=test
-            # docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
-            # docker run -it --rm ${KUSCIA_IMAGE} kuscia init --mode autonomy --domain "alice" > autonomy_alice.yaml && chmod 777 autonomy_alice.yaml
-            # cat autonomy_alice.yaml
+            IMAGE="secretflow/kuscia"
+            docker build -t $IMAGE:latest -f ./build/dockerfile/kuscia-anolis.Dockerfile .
+            export KUSCIA_IMAGE=$IMAGE:latest
+            export USER=test
+            docker run --rm $KUSCIA_IMAGE ls -la /home/kuscia/etc/conf/
+            docker run --rm $KUSCIA_IMAGE cat /home/kuscia/scripts/deploy/kuscia.sh > kuscia.sh && chmod u+x kuscia.sh
+            docker run -it --rm ${KUSCIA_IMAGE} kuscia init --mode autonomy --domain "alice" > autonomy_alice.yaml && chmod 777 autonomy_alice.yaml
+            cat autonomy_alice.yaml
             ls -la
-            docker run --name mysql -v data:/var/lib/mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD=Oasis-119 -d docker.io/mysql
-            # ./kuscia.sh start -c autonomy_alice.yaml -p 11080 -k 11081
+            ./kuscia.sh start -c autonomy_alice.yaml -p 11080 -k 11081
 
 
 # Orchestrate jobs using workflows
@@ -83,8 +83,8 @@ workflows:
             tags:
               only: /.*/
       - image_publish:
-          # requires:
-          #   - linux_build_kuscia
+          requires:
+            - linux_build_kuscia
           filters:
             branches:
               only: /.*/
