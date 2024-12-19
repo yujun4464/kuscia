@@ -66,15 +66,15 @@ jobs:
 workflows:
   kuscia-workflow:
     jobs:
-      - linux_build_kuscia:
-          matrix:
-            parameters:
-              executor: [ "linux_x64_executor" ]
-          filters:
-            branches:
-              only: /.*/
-            tags:
-              only: /.*/
+      # - linux_build_kuscia:
+      #     matrix:
+      #       parameters:
+      #         executor: [ "linux_x64_executor" ]
+      #     filters:
+      #       branches:
+      #         only: /.*/
+      #       tags:
+      #         only: /.*/
       - image_publish:
           # requires:
           #   - linux_build_kuscia
