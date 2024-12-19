@@ -82,8 +82,8 @@ workflows:
             tags:
               only: /.*/
       - image_publish:
-          # requires:
-          #   - linux_build_kuscia
+          requires:
+            - linux_build_kuscia
           filters:
             branches:
               only: /.*/
