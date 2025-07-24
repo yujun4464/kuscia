@@ -48,8 +48,8 @@ test:
 	GOEXPERIMENT=nocoverageredesign go test $$(go list ./cmd/... | grep -Ev ${CMD_EXCLUDE_TESTS}) --parallel 4 -gcflags="all=-N -l" -coverprofile=test-results/cmd.covprofile.out | tee test-results/cmd.output.txt
 	GOEXPERIMENT=nocoverageredesign go test $$(go list ./pkg/... | grep -Ev ${PKG_EXCLUDE_TESTS}) --parallel 4 -gcflags="all=-N -l" -coverprofile=test-results/pkg.covprofile.out | tee test-results/pkg.output.txt
 
-	cat ./test-results/cmd.output.txt | go-junit-report > ./test-results/TEST-cmd.xml
-	cat ./test-results/pkg.output.txt | go-junit-report > ./test-results/TEST-pkg.xml
+	cat ./test-results/cmd.output.txt | go-junit-report > /tmp/TEST-cmd.xml
+	cat ./test-results/pkg.output.txt | go-junit-report > /tmp/TEST-pkg.xml
 
 	echo "mode: set" > ./test-results/coverage.out && cat ./test-results/*.covprofile.out | grep -v mode: | sort -r | awk '{if($$1 != last) {print $0;last=$$1}}' >> ./test-results/coverage.out
 	cat ./test-results/coverage.out | gocover-cobertura > ./test-results/coverage.xml

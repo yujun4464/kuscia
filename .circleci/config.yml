@@ -96,11 +96,11 @@ jobs:
       - checkout
       - test
       - store_artifacts:
-          path: test-results.xml
+          path: /tmp/TEST-cmd.xml
           destination: test-results
       - store_artifacts:
-          path: coverage.xml
-          destination: coverage
+          path: /tmp/TEST-pkg.xml
+          destination: test-results
   linux_build_kuscia:
     parameters:
       executor:
