@@ -95,6 +95,12 @@ jobs:
     steps:
       - checkout
       - test
+      - store_artifacts:
+          path: test-results.xml
+          destination: test-results
+      - store_artifacts:
+          path: coverage.xml
+          destination: coverage
   linux_build_kuscia:
     parameters:
       executor:
