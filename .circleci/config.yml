@@ -95,11 +95,18 @@ jobs:
     steps:
       - checkout
       - test
+      - run:
+          name: go_tools_cover
+          command: |
+            go tool cover -html=./test-results/coverage.out -o /tmp/coverage.html      
       - store_artifacts:
           path: /tmp/TEST-cmd.xml
           destination: test-results
       - store_artifacts:
           path: /tmp/TEST-pkg.xml
+          destination: test-results
+      - store_artifacts:
+          path: /tmp/coverage.html
           destination: test-results
   linux_build_kuscia:
     parameters:
