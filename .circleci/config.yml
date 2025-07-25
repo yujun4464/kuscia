@@ -106,7 +106,7 @@ jobs:
             junit2html test-results/TEST-pkg.xml /tmp/report/test-results.html
             gocover-cobertura < test-results/coverage.out > test-results/coverage.xml            
             diff-cover test-results/coverage.xml --html-report /tmp/report/changed-coverage.html
-            cat > /tmp/report/index.html \<< EOF
+            cat > /tmp/report/index.html << 'EOF'
             <h1>📋 CI 测试与覆盖率报告</h1>
             <ul>
               <li><a href="test-results.html">测试结果</a></li>
