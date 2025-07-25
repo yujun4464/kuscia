@@ -98,16 +98,26 @@ jobs:
       - run:
           name: go_tools_cover
           command: |
-            go tool cover -html=./test-results/coverage.out -o /tmp/coverage.html      
+            mkdir -p /tmp/report
+            apt-get update && apt-get install -y python3-pip lcov
+            pip3 install --user junit2html diff-cover
+            go install github.com/boumenot/gocover-cobertura@latest
+            junit2html test-results/TEST-*.xml /tmp/report/test-results.html
+            gocover-cobertura < test-results/coverage.out > test-results/coverage.xml            
+            diff-cover test-results/coverage.xml --html-report /tmp/report/changed-coverage.html
+            cat > /tmp/report/index.html << EOF
+            <h1>📋 CI 测试与覆盖率报告</h1>
+            <ul>
+              <li><a href="test-results.html">测试结果</a></li>
+              <li><a href="coverage-report/index.html">行覆盖率</a></li>
+              <li><a href="changed-coverage.html">变更行覆盖率</a></li>
+            </ul>
+            EOF
+
       - store_artifacts:
-          path: /tmp/TEST-cmd.xml
-          destination: test-results-cmd
-      - store_artifacts:
-          path: /tmp/TEST-pkg.xml
-          destination: test-results-pkg
-      - store_artifacts:
-          path: /tmp/coverage.html
-          destination: test-results-coverage
+          path: /tmp/report
+          destination: test-results
+
   linux_build_kuscia:
     parameters:
       executor:
