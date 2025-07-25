@@ -99,6 +99,7 @@ jobs:
           name: go_tools_cover
           command: |
             mkdir -p /tmp/report
+            export PATH=$PATH:/root/.local/bin
             apt-get update && apt-get install -y python3-pip lcov
             pip3 install --user junit2html diff-cover
             go install github.com/boumenot/gocover-cobertura@latest
