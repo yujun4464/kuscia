@@ -101,13 +101,13 @@ jobs:
             go tool cover -html=./test-results/coverage.out -o /tmp/coverage.html      
       - store_artifacts:
           path: /tmp/TEST-cmd.xml
-          destination: test-results
+          destination: test-results-cmd
       - store_artifacts:
           path: /tmp/TEST-pkg.xml
-          destination: test-results
+          destination: test-results-pkg
       - store_artifacts:
           path: /tmp/coverage.html
-          destination: test-results
+          destination: test-results-coverage
   linux_build_kuscia:
     parameters:
       executor:
